@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="org.xllapp.service.config.SCConfigDao">
+
+	<resultMap id="configResultMap" type="org.xllapp.service.config.SCConfig">
+		<result property="id" column="ID" />
+		<result property="group" column="CONFIG_GROUP" />
+		<result property="key" column="CONFIG_KEY" />
+		<result property="value" column="CONFIG_VALUE" />
+		<result property="remark" column="REMARK" />
+	</resultMap>
+
+	<sql id="configColumns">
+	    <![CDATA[
+		CONFIG_GROUP,CONFIG_KEY,CONFIG_VALUE,REMARK
+	    ]]>
+	</sql>
+
+	<select id="getConfig" resultMap="configResultMap">
+		select
+		<include refid="configColumns" />
+		from CONFIG where CONFIG_GROUP = #{param1} and CONFIG_KEY = #{param2}
+	</select>
+
+	<select id="getGroup" resultMap="configResultMap">
+		select
+		<include refid="configColumns" />
+		from CONFIG where CONFIG_GROUP = #{param1}
+	</select>
+
+	<update id="setConfig" parameterType="org.xllapp.service.config.SCConfig">
+	<![CDATA[
+		update CONFIG set 
+		   CONFIG_GROUP = #{group},
+	       CONFIG_KEY = #{key},
+	       CONFIG_VALUE = #{value},
+	       REMARK = #{remark},
+	       LAST_MODIF_TIME = now()
+		where CONFIG_GROUP = #{group} and CONFIG_KEY = #{key}
+	 ]]>
+	</update>
+
+</mapper> 
